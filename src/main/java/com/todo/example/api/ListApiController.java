@@ -22,8 +22,9 @@ import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-28T16:05:18.733+05:30")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-28T17:57:59.353+05:30")
 
 @Controller
 public class ListApiController implements ListApi {
@@ -41,7 +42,15 @@ public class ListApiController implements ListApi {
     }
 
     public ResponseEntity<Void> addTask(@ApiParam(value = "Unique identifier of the list to add the task for",required=true) @PathVariable("id") UUID id,@ApiParam(value = "task to add"  )  @Valid @RequestBody Task task) {
-        String accept = request.getHeader("Accept");
+    	TodoList todoList=new TodoList();
+    	String accept = request.getHeader("Accept");
+       
+        List<Task> tasks=new ArrayList<Task>();
+        if(id ==todoList.getId())
+        {
+        	tasks.add(task);
+        	todoList.setTasks(tasks);
+        }
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
@@ -49,6 +58,7 @@ public class ListApiController implements ListApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
+            	
                 return new ResponseEntity<TodoList>(objectMapper.readValue("{  \"name\" : \"Home\",  \"description\" : \"The list of things that need to be done at home\n\",  \"id\" : \"d290f1ee-6c54-4b01-90e6-d701748f0851\",  \"tasks\" : [ {    \"name\" : \"mow the yard\",    \"id\" : \"0e2ac84f-f723-4f24-878b-44e63e7ae580\",    \"completed\" : true  }, {    \"name\" : \"mow the yard\",    \"id\" : \"0e2ac84f-f723-4f24-878b-44e63e7ae580\",    \"completed\" : true  } ]}", TodoList.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
@@ -61,6 +71,10 @@ public class ListApiController implements ListApi {
 
     public ResponseEntity<Void> putTask(@ApiParam(value = "Unique identifier of the list to add the task for",required=true) @PathVariable("id") UUID id,@ApiParam(value = "Unique identifier task to complete",required=true) @PathVariable("taskId") UUID taskId,@ApiParam(value = "task to add"  )  @Valid @RequestBody CompletedTask task) {
         String accept = request.getHeader("Accept");
+        TodoList todoList=new TodoList();
+    	if (id == todoList.getId()) {
+			
+		}
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
